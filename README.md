@@ -133,5 +133,4 @@ Invest in retention through exclusive content, personalised rewards, and custome
 Apply cumulative growth rates to forecast CLV for new cohorts and guide strategic planning.
 
 ## Key Takeaway
-
 By incorporating **all users**, analysing behaviour through **weekly cohorts**, and applying **predictive modelling**, this project delivers a **robust and actionable CLV framework** that supports better marketing decisions, budgeting, and long-term growth planning.
