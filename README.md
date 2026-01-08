@@ -1,44 +1,137 @@
 ## Title: Cumulative ANALYSIS (CLV)
 # Author: Oluwadara Olamide 
-## The task
-I got a follow up task from your manager as he read some article that calculating CLV using Shopify’s formula is too simplistic. He has heard somewhere that using cohorts produces more reliable and actionable results. Once again please use  table to answer follow up questions from your manager.
-Additionally, he identified 2 problems with your previous analysis:
-1. You included only customers who purchased something, while marketing is counting all user registrations that they manage to bring to your ecommerce site. Thus, you need to adjust your calculations to include all users who have been on your website, not only the one who purchased something.
-2. Your average customer does not tend to stay with your ecommerce site for too long. He wants to see weekly picture using cohorts. He expects customers to stay no longer than 12 weeks with your ecommerce site.
 
-As the first step you should write 1 or 2 queries to pull data of weekly revenue divided by registrations. Since in this particular site there is no concept of registration, we will simply use the first visit to our website as registration date (registration cohort). Do not forget to use `user_pseudo_id` to distinguish between users. Then divide revenue in consequent weeks by the number of weekly registration numbers. Once you apply conditional formatting to your data, the end result should look something like this:
+# Customer Lifetime Value (CLV) Analysis Using Cohort Modelling
 
-### Weekly Average Revenue by Cohorts (USD)
-Next you will produce the same chart, but the revenue / registrations for a particular week cohort will be expressed as a cumulative sum. For this you simply need to add previous week revenue to current week’s revenue. Down below you will calculate averages for all week numbers (weeks since registration). Down below that you will calculate percentage growth, which will be based on those average numbers:
+## Project Overview
 
-### Cumulative Revenue by Cohorts (USD)
-Note: for cumulative weekly averages calculation use first table averages
+This project is a follow-up analysis aimed at improving the accuracy and usefulness of **Customer Lifetime Value (CLV)** calculations. Following management feedback, the traditional **Shopify CLV formula** was deemed overly simplistic. Instead, a **cohort-based approach** was adopted to produce more reliable and actionable insights.
+The analysis uses **weekly user cohorts**, includes **all website visitors** (not only purchasers), and evaluates revenue behaviour over a **12-week customer lifetime window**. This approach provides a clearer understanding of customer value over time and enables **future revenue prediction** for newly acquired cohorts.
 
-Basically, the chart above gives you growth of revenue by registered users in cohort for n weeks after registration. While numbers below summarize those values in monetary terms (red marked numbers) and percentage terms (green marked numbers). This provides you with a coherent view of how much revenue you can expect to grow based on your historical data.
+## Business Context & Objectives
+The objectives of this project were to:
 
-Next, we will focus on the future and try to predict the missing data. In this case missing data is the revenue we should expect from later acquired user cohorts. For example, for users whose first session happened on 2021-01-24 week we have only their first week revenue which is 0.19$ per user who started their first session in this week. Though we are not sure what will happen in the next 12 weeks.
+* Replace the simplistic Shopify CLV formula with a **cohort-based CLV model**
+* Include **all users who visited the website**, not only those who made purchases
+* Analyse revenue performance on a **weekly cohort basis**
+* Limit customer lifetime assumptions to **12 weeks**, reflecting actual user behaviour
+* Predict future revenue for **incomplete cohorts**
+* Provide management with a **more realistic estimate of CLV**
 
-For this we will simply use previously calculated Cumulative growth % (red marked area in chart above) and predict all 12 future weeks values (ex. for this cohort we can calculate expected revenue for week 1 as 0.19 USD x (1 + 23.29%) = 0.24 USD, for week 2 as 0.24 USD x (1 + 12.26%) = 0.27 USD). Using Avg. cumulative growth for each week we can calculate that based on 0.19$ initial value we can expect 0.35 USD as revenue on week 12. Provide a chart which calculates these numbers for all future weeks (up till week 12).
+The analysis assumes that the **current week is 2021-01-24**, which represents the final cohort available in the dataset.
 
-See example chart below which should show the following numbers for all weekly user cohorts:
-### Revenue Prediction by Cohorts (USD)
-The chart above is our final result. You should calculate the average of cumulative revenue for 12th week for all users who have been on your website. This not only provide better estimate of CLV for all your users who have been on your website (including the ones who did not purchase anything) but also allows you to see trends for weekly cohorts. Have a look at the conditional formatting you added to all 3 charts and be prepared to answer follow up questions.
+## Data Sources
 
-## Evaluation criteria for Graded project submission
+* **BigQuery Table:** `turing_data_analytics.raw_events`
+* **User identifier:** `user_pseudo_id`
+* **Registration definition:** First recorded website visit
+* **Revenue source:** Ecommerce purchase events
 
-- SQL, correct columns identified to make analysis.
-- SQL, correctly calculated main metrics: revenue, orders, customers.
-- SQL, correctly calculated user counts by weekly cohorts.
-- Google sheets, visualization follows examples above, at least 3 different tables with conditional formatting applied are provided.
-- Analysis, findings and calculations are correct and main trends identified.
-- Analytical approach to the problem
 
-**Sample questions**:
-- Does including all customers (not only the ones who purchased something) influence calculation of CLV?
-- Is your previously calculated CLV (using Shopify formula) still accurate?
-- How does cohort analysis help you understand what revenue you can expect in the future?
-- If we knew that our business Take Rate (% of revenue we can actually treat as profit) is only 10%, would you use this percentage estimating Lifetime value of the customer? Could you compare it against customer acquisition costs provided by marketing?
-- What caveats can you expect from such an approach?
-### Note: More information can be seen in DA_MAT_CRFM_4 file.
+## Methodology
 
- 
+### 1. Cohort Definition
+
+* Users were grouped into **weekly registration cohorts** based on their **first website visit**
+* Revenue was tracked for each cohort across **12 weeks since registration**
+
+### 2. Weekly Average Revenue by Cohort
+
+* Weekly revenue was divided by the number of registered users in each cohort
+* This produced **average revenue per user per week**
+* Results were visualised using **conditional formatting** to highlight trends
+
+### 3. Cumulative Revenue by Cohort
+
+* Weekly average revenue was converted into **cumulative revenue**
+* Averages were calculated across all cohorts for each week
+* **Week-over-week cumulative growth percentages** were derived from these averages
+
+### 4. Revenue Prediction for New Cohorts
+
+* For incomplete cohorts (e.g. users acquired in the final week), future revenue was predicted
+* Predictions were based on **historical cumulative growth percentages**
+* Revenue was forecasted up to **Week 12** for each cohort
+* This produced a **forward-looking CLV estimate**
+
+### 5. Final CLV Estimate
+
+* The **average cumulative revenue at Week 12** across all cohorts was used as the final CLV
+* This CLV includes **all users**, including those who never made a purchase
+
+
+## Tools & Files
+
+### SQL
+
+* **RFM.sql**
+  Contains SQL queries used to extract user-level data from BigQuery, including cohort assignment and revenue calculations.
+
+### Data
+
+* **RFM data.csv**
+  Exported dataset from BigQuery used for cohort analysis.
+
+### Analysis & Visualisation
+
+* **module 3 sprint 3.xlsx**
+  Excel workbook containing:
+
+  * Weekly Average Revenue by Cohorts
+  * Cumulative Revenue by Cohorts
+  * Revenue Prediction by Cohorts (up to 12 weeks)
+  * Conditional formatting for trend analysis
+
+## Key Findings
+
+### Overall Insights
+
+The cohort-based approach provides a **more granular and realistic view of customer behaviour and CLV** compared to traditional methods.
+
+1. Weekly average revenue per cohort reveals how user value evolves during the first 12 weeks after registration.
+2. Cumulative revenue analysis shows that **early engagement and repeat visits** are critical drivers of long-term revenue.
+3. Predictive modelling enables estimation of future revenue for newer cohorts with incomplete data.
+
+### Weekly Average Revenue by Cohorts
+
+**Findings:**
+
+* Average revenue per user varies significantly across cohorts and weeks.
+* Later cohorts show lower retention and revenue growth, suggesting potential engagement or content issues after initial visits.
+
+### Cumulative Revenue by Cohorts
+
+**Findings:**
+
+* Cumulative revenue increases over time but begins to plateau for many cohorts after **Week 6**.
+* Cohorts with strong early engagement demonstrate **higher long-term value**.
+* More recent cohorts generally show slower revenue growth.
+
+### Revenue Prediction by Cohorts (Up to 12 Weeks)
+
+**Findings:**
+
+* Historical cohort behaviour enables reliable prediction of future revenue.
+* Cohorts with strong initial performance show higher projected CLV.
+* Predicted CLV values are **more realistic and data-driven** than Shopify’s simple CLV model.
+
+## Recommendations
+
+**A. Improve Early Engagement**
+Focus on onboarding, personalised recommendations, and targeted campaigns to increase early user engagement.
+
+**B. Re-engage Low-Performance Cohorts**
+Introduce re-engagement strategies such as email campaigns, loyalty programmes, and promotional offers.
+
+**C. Optimise Marketing Spend**
+Allocate marketing budgets based on cohort performance, prioritising high-value cohorts.
+
+**D. Strengthen Retention Strategies**
+Invest in retention through exclusive content, personalised rewards, and customer success initiatives.
+
+**E. Use Cohort-Based Forecasting for CLV**
+Apply cumulative growth rates to forecast CLV for new cohorts and guide strategic planning.
+
+## Key Takeaway
+
+By incorporating **all users**, analysing behaviour through **weekly cohorts**, and applying **predictive modelling**, this project delivers a **robust and actionable CLV framework** that supports better marketing decisions, budgeting, and long-term growth planning.
